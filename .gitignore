@@ -1,0 +1,87 @@
+# =========================
+# Python bytecode & caches
+# =========================
+**/__pycache__/
+*.py[cod]
+*$py.class
+
+# =========================
+# Virtual environments
+# =========================
+.venv/
+venv/
+env/
+ENV/
+.python-version
+
+# =========================
+# Packaging / build artifacts
+# =========================
+build/
+dist/
+*.egg-info/
+.eggs/
+*.egg
+pip-wheel-metadata/
+wheelhouse/
+
+# =========================
+# Test / coverage outputs
+# =========================
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# =========================
+# Logs & temp files
+# =========================
+*.log
+*.tmp
+*.swp
+*.bak
+
+# =========================
+# Jupyter
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# PyCharm
+# =========================
+.idea/
+*.iml
+
+# =========================
+# VS Code
+# =========================
+.vscode/
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+
+# =========================
+# OS-specific junk
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Type checker / linters
+# =========================
+.mypy_cache/
+.pytype/
+.pyright/
+
+# =========================
+# Build systems / tools
+# =========================
+.tox/
+.nox/
+.cache/
+
+/experiments
