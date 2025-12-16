@@ -1,13 +1,15 @@
-""" A Parallelised Implementation of K-D Trees
+"""A Parallelised Implementation of K-D Trees
 
 Code extended from http://folk.uio.no/sturlamo/python/multiprocessing-tutorial.pdf
 """
+
+import ctypes
 import logging
+import multiprocessing as mp
 
 import numpy as np
-import multiprocessing as mp
-import ctypes
 from scipy.spatial import KDTree
+
 
 def shmem_as_nparray(shmem_array):
     """
@@ -15,8 +17,8 @@ def shmem_as_nparray(shmem_array):
     """
     return np.frombuffer(shmem_array.get_obj())
 
-def _pquery(scheduler, data, ndata, ndim, leafsize,
-            x, nx, d, i, k, eps, p, dub, ierr):
+
+def _pquery(scheduler, data, ndata, ndim, leafsize, x, nx, d, i, k, eps, p, dub, ierr):
     """
     Function that parallelly queries the K-D tree based on chunks of data returned by the scheduler
     """
@@ -37,6 +39,7 @@ def _pquery(scheduler, data, ndata, ndim, leafsize,
         logging.error(e)
         ierr.value += 1
 
+
 def num_cpus():
     """
     Function to get the number of CPUs / cores. This is used to determine the number of processes to spawn.
@@ -47,34 +50,35 @@ def num_cpus():
     except NotImplementedError:
         return 2
 
+
 class cKDTree_MP(KDTree):
     """
     The parallelised KDTree class
     """
+
     def __init__(self, data_list, leafsize=30):
-        """ Class Instantiation
+        """Class Instantiation
         Arguments are based on scipy.spatial.KDTree class
         """
         data = np.array(data_list)
         n, m = data.shape
-        self.shmem_data = mp.Array(ctypes.c_double, n*m)
+        self.shmem_data = mp.Array(ctypes.c_double, n * m)
 
         _data = shmem_as_nparray(self.shmem_data).reshape((n, m))
         _data[:, :] = data
 
         self._leafsize = leafsize
-        super(cKDTree_MP, self).__init__(_data, leafsize=leafsize)
+        super().__init__(_data, leafsize=leafsize)
 
-    def pquery(self, x_list, k=1, eps=0, p=2,
-               distance_upper_bound=np.inf):
+    def pquery(self, x_list, k=1, eps=0, p=2, distance_upper_bound=np.inf):
         """
         Function to parallelly query the K-D Tree
         """
         x = np.array(x_list)
         nx, mx = x.shape
-        shmem_x = mp.Array(ctypes.c_double, nx*mx)
-        shmem_d = mp.Array(ctypes.c_double, nx*k)
-        shmem_i = mp.Array(ctypes.c_double, nx*k)
+        shmem_x = mp.Array(ctypes.c_double, nx * mx)
+        shmem_d = mp.Array(ctypes.c_double, nx * k)
+        shmem_i = mp.Array(ctypes.c_double, nx * k)
 
         _x = shmem_as_nparray(shmem_x).reshape((nx, mx))
         _d = shmem_as_nparray(shmem_d).reshape((nx, k))
@@ -90,24 +94,39 @@ class cKDTree_MP(KDTree):
 
         ierr = mp.Value(ctypes.c_int, 0)
 
-        query_args = (scheduler,
-                      self.shmem_data, self.n, self.m, self.leafsize,
-                      shmem_x, nx, shmem_d, shmem_i,
-                      k, eps, p, distance_upper_bound,
-                      ierr)
+        query_args = (
+            scheduler,
+            self.shmem_data,
+            self.n,
+            self.m,
+            self.leafsize,
+            shmem_x,
+            nx,
+            shmem_d,
+            shmem_i,
+            k,
+            eps,
+            p,
+            distance_upper_bound,
+            ierr,
+        )
         pool = [mp.Process(target=_pquery, args=query_args) for _ in range(nprocs)]
-        for p in pool: p.start()
-        for p in pool: p.join()
+        for p in pool:
+            p.start()
+        for p in pool:
+            p.join()
         if ierr.value != 0:
-            raise RuntimeError('%d errors in worker processes' % (ierr.value))
+            raise RuntimeError(f"errors in worker processes :{ierr.value}")
 
         return _d.copy(), _i.astype(int).copy()
+
 
 class Scheduler:
     """
     Scheduler that returns chunks of data to be queries on the K-D Tree.
     The number of chunks is determined by the number of processes.
     """
+
     def __init__(self, ndata, nprocs):
         self._ndata = mp.RawValue(ctypes.c_int, ndata)
         self._start = mp.RawValue(ctypes.c_int, 0)
@@ -119,7 +138,7 @@ class Scheduler:
     def __iter__(self):
         return self
 
-    def next(self): # Python 2 support
+    def next(self):  # Python 2 support
         self._lock.acquire()
         ndata = self._ndata.value
         start = self._start.value
@@ -140,7 +159,7 @@ class Scheduler:
             self._lock.release()
             raise StopIteration
 
-    def __next__(self): # Python 3 support
+    def __next__(self):  # Python 3 support
         self._lock.acquire()
         ndata = self._ndata.value
         start = self._start.value
