@@ -7,7 +7,7 @@ import logging
 import numpy as np
 import multiprocessing as mp
 import ctypes
-from scipy.spatial import cKDTree
+from scipy.spatial import KDTree
 
 def shmem_as_nparray(shmem_array):
     """
@@ -26,7 +26,7 @@ def _pquery(scheduler, data, ndata, ndim, leafsize,
         _d = shmem_as_nparray(d).reshape((nx, k))
         _i = shmem_as_nparray(i).reshape((nx, k))
 
-        kdtree = cKDTree(_data, leafsize=leafsize)
+        kdtree = KDTree(_data, leafsize=leafsize)
 
         for s in scheduler:
             d_out, i_out = kdtree.query(_x[s, :], k=k, eps=eps, p=p, distance_upper_bound=dub)
@@ -47,13 +47,13 @@ def num_cpus():
     except NotImplementedError:
         return 2
 
-class cKDTree_MP(cKDTree):
+class cKDTree_MP(KDTree):
     """
-    The parallelised cKDTree class
+    The parallelised KDTree class
     """
     def __init__(self, data_list, leafsize=30):
         """ Class Instantiation
-        Arguments are based on scipy.spatial.cKDTree class
+        Arguments are based on scipy.spatial.KDTree class
         """
         data = np.array(data_list)
         n, m = data.shape

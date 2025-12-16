@@ -19,7 +19,7 @@ if sys.platform == 'win32':
     csv.field_size_limit(2 ** 31 - 1)
 else:
     csv.field_size_limit(sys.maxsize)
-from scipy.spatial import cKDTree
+from scipy.spatial import KDTree
 from . import KD_Tree
 
 # Schema of the cities file created by this library
@@ -81,7 +81,7 @@ class Gazetteer(object):
         self.conn = sqlite3.connect(DB_PATH)
         self.curr = self.conn.cursor()
         if self.mode == 1:  # Single-process
-            self.tree = cKDTree(coordinates)
+            self.tree = KDTree(coordinates)
         else:  # Multi-process
             self.tree = KD_Tree.cKDTree_MP(coordinates)
 
