@@ -1,0 +1,38 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "gazetteer"
+version = "0.1.0"
+description = "A simple, fast and accurate boundary based reverse geocoding library in python"
+readme = "README.md"
+requires-python = ">=3.12"
+
+
+dependencies = [
+    "pydantic>=2.12.5",
+    "scipy>=1.16.3",
+    "shapely>=2.1.2",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["gazetteer"]
+
+# Include runtime data files
+[tool.hatch.build.targets.wheel.include]
+"gazetteer/data/**" = "gazetteer/data/**"
+
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+    "ruff>=0.14.9",
+]
+
+[tool.ruff]
+line-length = 150
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+ignore = ["ANN"]
