@@ -20,3 +20,10 @@ dev = [
 
 [tool.ruff]
 line-length = 150
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+ignore = ["ANN"]
+
+[tool.ruff.format]
+line-length = 100
