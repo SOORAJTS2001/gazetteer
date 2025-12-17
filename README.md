@@ -1,4 +1,10 @@
 # Gazetteer
+[![CI](https://github.com/SOORAJTS2001/gazetteer/actions/workflows/ci.yml/badge.svg)](
+https://github.com/SOORAJTS2001/gazetteer/actions/workflows/ci.yml
+)
+![Python](https://img.shields.io/badge/python-3.12%20|%203.13%20|%203.14-blue)
+![License](https://img.shields.io/github/license/SOORAJTS2001/gazetteer)
+
 
 A simple, fully offline, accurate boundary based reverse geocoding library in python
 
