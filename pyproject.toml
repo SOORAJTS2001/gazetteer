@@ -29,9 +29,22 @@ dev = [
     "pytest>=9.0.2",
     "ruff>=0.14.9",
 ]
+docs = [
+    "myst-parser>=4.0.1",
+    "sphinx>=8.2.3",
+    "sphinxawesome-theme>=5.3.2",
+]
 
 [tool.ruff]
 line-length = 150
+exclude=[
+    "docs/**"
+]
+
+[tool.ruff.format]
+exclude = [
+    "docs/**",
+]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "UP", "B"]
