@@ -4,10 +4,11 @@ https://github.com/SOORAJTS2001/gazetteer/actions/workflows/ci.yml
 )
 ![Python](https://img.shields.io/badge/python-3.12%20|%203.13%20|%203.14-blue)
 ![License](https://img.shields.io/github/license/SOORAJTS2001/gazetteer)
-
+[![Documentation Status](https://app.readthedocs.org/projects/gazetteer/badge/?version=latest)](https://gazetteer.readthedocs.io/en/latest/)
 
 A simple, fully offline, accurate boundary based reverse geocoding library in python
 
+Docs - https://gazetteer.readthedocs.io/en/latest/
 ### Reverse Geocoding
 It is a process of finding valid address out of coordinates (lat, long), that includes county,state,country etc..
 
