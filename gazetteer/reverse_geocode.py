@@ -1,7 +1,7 @@
 """A Fast, Offline Reverse Geocoder in Python
 
 A Python library for offline reverse geocoding. It improves on an existing library
-called reverse_geocode developed by Richard Penman and Ajay Thampi.
+called reverse_geocode developed by Ajay Thampi.
 """
 
 import csv
@@ -48,7 +48,7 @@ class LocationBaseModel(BaseModel):
 class GeocoderResultBaseModel(BaseModel):
     lat: float = Field(..., description="Given latitude")
     lon: float = Field(..., description="Given longitude")
-    result: LocationBaseModel
+    result: LocationBaseModel | None
 
 
 def singleton(cls):

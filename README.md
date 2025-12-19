@@ -5,6 +5,7 @@ https://github.com/SOORAJTS2001/gazetteer/actions/workflows/ci.yml
 ![Python](https://img.shields.io/badge/python-3.12%20|%203.13%20|%203.14-blue)
 ![License](https://img.shields.io/github/license/SOORAJTS2001/gazetteer)
 [![Documentation Status](https://app.readthedocs.org/projects/gazetteer/badge/?version=latest)](https://gazetteer.readthedocs.io/en/latest/)
+[![PyPI version](https://badge.fury.io/py/python-gazetteer.svg)](https://badge.fury.io/py/python-gazetteer)
 
 A simple, fully offline, accurate boundary based reverse geocoding library in python
 
@@ -12,7 +13,7 @@ Docs - https://gazetteer.readthedocs.io/en/latest/
 ### Reverse Geocoding
 It is a process of finding valid address out of coordinates (lat, long), that includes county,state,country etc..
 
-### Advantage over other libraries
+### Advantage
 - This is a boundary based geocoding library which provides significantly more accurate result than the point based computing counterparts
 - Provide data upto 3 administrative divisions
   - ADM0 - Country
@@ -21,12 +22,12 @@ It is a process of finding valid address out of coordinates (lat, long), that in
 - Boundary validation is computed on the fly, which makes it extremely fast and efficient
 - No max usage, rate limits since everything runs on yours device fully offline
 - No boundary ambiguity or invalid address near border regions, since it is validated by boundary itself
-- Covers over 145,000+ boundaries
+- Covers over 145,000+ boundaries of 210+ countries
 
 ### How to use gazetteer
 #### Installation
 ```bash
-pip install gazetteer
+pip install python-gazetteer
 ```
 #### Usage
 ```python
@@ -66,6 +67,8 @@ from gazetteer import Gazetteer
 gz = Gazetteer(mode=2)
 ```
 This switches to multiprocessing mode, utilizing all cores in your system
+
+If the given coordinates are not found or found inside a water boundary like sea/ocean, it should return `None` instead of `LocationBaseModel`
 ### How it works
 #### Data Management
 - Boundary Data is sourced from [Geoboundaries](https://www.geoboundaries.org/)
