@@ -25,3 +25,17 @@ def test_invalid_inputs():
         gz.search([])
         gz.search(invalid_coordinates)
         gz.search(list(invalid_coordinates))
+
+
+def test_wrong_inputs():
+    gz = Gazetteer()
+    invalid_coordinates = [(700, -700), (7, -700), (700, 72)]  # invalid coordinates
+    for index, data in enumerate(gz.search(invalid_coordinates)):
+        assert invalid_coordinates[index] == (data.lon, data.lat)
+        assert data.result is None
+
+
+def test_invalid_modes(sample_coords):
+    gz = Gazetteer(mode=10)
+    for data in gz.search(list(sample_coords.keys())):
+        assert sample_coords[(data.lon, data.lat)] == data.result

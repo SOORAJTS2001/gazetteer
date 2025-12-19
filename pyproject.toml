@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "python-gazetteer"
-version = "0.1.0"
+version = "0.1.1"
 description = "A simple, fast and accurate boundary based reverse geocoding library in python"
 readme = "README.md"
 requires-python = ">=3.12"
