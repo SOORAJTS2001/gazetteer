@@ -73,13 +73,13 @@ If the given coordinates are not found or found inside a water boundary like sea
 #### Data Management
 - Boundary Data is sourced from [Geoboundaries](https://www.geoboundaries.org/)
 - Data is stored in two places, ``sqlite`` db and a ``csv`` file
-- A simplified boundary is stored inside ``sqlite`` db in the format of ``WKB``(Well Known Library)
+- A simplified boundary is stored inside ``sqlite`` db in the format of ``WKB``(Well Known Binary)
 - The metadata for locations is stored as ``csv``
 #### Computation
   - Uses ``KDTree`` nearest neighbour algorithm from ``scipy`` to find the closest boundary point
   - Validates the nearest neighbour using the boundary provided in the ``sqlite``
 
-***Note: Regions that doesn't have an available ADM3 boundary will return ADM2 instead as the nearest neighbour***
+***Note: Regions that don't have an available ADM3 boundary will return ADM2 instead as the nearest neighbour***
 
 ### Acknowledgements
 
